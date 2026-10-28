@@ -40,7 +40,7 @@ The official launch is planned for November 2026, when CalcuChess is expected to
 
 CalcuChess is designed to make its tools straightforward to access, so you can focus on playing, learning, and improving.
 
-Since this is an open beta please expect bugs, and I would appreciate if you reported the bugs [here](placeholder link)
+Since this is an open beta please expect bugs, and I would appreciate if you reported the bugs [on this discord server](https://discord.gg/4xhWjWdxw)
 
 ## About the Project
 
