@@ -1,198 +1,613 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#262522">
-  <title>CalcuChess — Chess Game Analysis</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="/favicon.png">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-  <script src="script.js" defer></script>
-</head>
-<body>
-  <header class="topbar">
-    <a class="brand" href="#" id="home-link" aria-label="CalcuChess home">
-      <span class="brand-piece">♞</span>
-      <span>Calcu<span class="brand-light">Chess</span></span>
-    </a>
-    <nav class="main-nav" aria-label="Main navigation">
-      <button class="nav-link active" id="nav-home">Import game</button>
-      <button class="nav-link" id="nav-analysis">Analysis board</button>
-    </nav>
-    <div class="topbar-right"><span class="free-label">FREE ANALYSIS</span></div>
-  </header>
-
-  <main>
-    <section class="home-view" id="home-view">
-      <div class="page-heading">
-        <div>
-          <p class="eyebrow">GAME REVIEW</p>
-          <h1>Analyse your chess.</h1>
-          <p class="heading-description">We use Lichess.org's logic to calculate your moves.</p>
-        </div>
-        <button class="button button-dark" id="quick-analysis">Open analysis board <span>↗</span></button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#262522" />
+    <title>CalcuChess</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="script.js" defer></script>
+    <script src="botplay.js" defer></script>
+    <script src="puzzles.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" id="home-link" aria-label="CalcuChess home">
+        <span class="brand-piece">♞</span>
+        <span>Calcu<span class="brand-light">Chess</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" id="nav-home">Import game</button>
+        <button class="nav-link" id="nav-analysis">Analysis board</button>
+        <button class="nav-link" id="nav-bot">Bot Play</button>
+        <button class="nav-link" id="nav-puzzles">Puzzles</button>
+      </nav>
+      <div class="topbar-right">
+        <span class="free-label">FREE ANALYSIS</span>
       </div>
+    </header>
 
-      <section class="import-section">
-        <div class="section-heading">
-          <h2>Import a game</h2>
-          <span class="muted">Choose where your game comes from</span>
+    <main>
+      <section class="home-view" id="home-view">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">GAME REVIEW</p>
+            <h1>Analyse your chess.</h1>
+            <p class="heading-description">
+              We use Lichess.org's logic to calculate your moves.
+            </p>
+          </div>
+          <button class="button button-dark" id="quick-analysis">
+            Open analysis board <span>↗</span>
+          </button>
         </div>
 
-        <div class="import-grid">
-          <article class="platform-card">
-            <div class="platform-heading">
-              <span class="platform-icon chesscom-icon">♟</span>
-              <div><h3>Chess.com</h3><p>Import games from a public profile</p></div>
+        <section class="import-section">
+          <div class="section-heading">
+            <h2>Import a game</h2>
+            <span class="muted">Choose where your game comes from</span>
+          </div>
+
+          <div class="import-grid">
+            <article class="platform-card">
+              <div class="platform-heading">
+                <span class="platform-icon chesscom-icon">♟</span>
+                <div>
+                  <h3>Chess.com</h3>
+                  <p>Import games from a public profile</p>
+                </div>
+              </div>
+              <form id="chesscom-form" class="username-form">
+                <label class="sr-only" for="chesscom-username"
+                  >Chess.com username</label
+                >
+                <span class="at-prefix">chess.com/</span>
+                <input
+                  id="chesscom-username"
+                  name="username"
+                  placeholder="username"
+                  autocomplete="off"
+                  required
+                />
+                <button class="button button-green" type="submit">
+                  Find games
+                </button>
+              </form>
+              <p class="platform-note">
+                Public games only. No password needed.
+              </p>
+            </article>
+
+            <article class="platform-card">
+              <div class="platform-heading">
+                <span class="platform-icon lichess-icon">♞</span>
+                <div>
+                  <h3>Lichess</h3>
+                  <p>Import games from a public profile</p>
+                </div>
+              </div>
+              <form id="lichess-form" class="username-form">
+                <label class="sr-only" for="lichess-username"
+                  >Lichess username</label
+                >
+                <span class="at-prefix">lichess.org/@/</span>
+                <input
+                  id="lichess-username"
+                  name="username"
+                  placeholder="username"
+                  autocomplete="off"
+                  required
+                />
+                <button class="button button-green" type="submit">
+                  Find games
+                </button>
+              </form>
+              <p class="platform-note">
+                Public games only. No password needed.
+              </p>
+            </article>
+          </div>
+
+          <div class="import-divider">
+            <span>OR IMPORT A GAME DIRECTLY</span>
+          </div>
+
+          <div class="direct-import">
+            <div class="direct-import-copy">
+              <h3>PGN or FEN</h3>
+              <p>Paste a complete game or load a single position.</p>
             </div>
-            <form id="chesscom-form" class="username-form">
-              <label class="sr-only" for="chesscom-username">Chess.com username</label>
-              <span class="at-prefix">chess.com/</span>
-              <input id="chesscom-username" name="username" placeholder="username" autocomplete="off" required>
-              <button class="button button-green" type="submit">Find games</button>
-            </form>
-            <p class="platform-note">Public games only. No password needed.</p>
-          </article>
+            <button class="button button-outline" id="open-pgn">
+              Paste PGN
+            </button>
+            <button class="button button-outline" id="open-fen">
+              Load FEN
+            </button>
+          </div>
 
-          <article class="platform-card">
-            <div class="platform-heading">
-              <span class="platform-icon lichess-icon">♞</span>
-              <div><h3>Lichess</h3><p>Import games from a public profile</p></div>
+          <section class="paste-panel hidden" id="import-panel">
+            <div class="paste-panel-heading">
+              <div>
+                <h3 id="import-label">Paste PGN</h3>
+                <p id="import-help">Paste the moves of a game in PGN format.</p>
+              </div>
+              <button
+                class="icon-button"
+                id="close-import"
+                aria-label="Close import panel"
+              >
+                ×
+              </button>
             </div>
-            <form id="lichess-form" class="username-form">
-              <label class="sr-only" for="lichess-username">Lichess username</label>
-              <span class="at-prefix">lichess.org/@/</span>
-              <input id="lichess-username" name="username" placeholder="username" autocomplete="off" required>
-              <button class="button button-green" type="submit">Find games</button>
-            </form>
-            <p class="platform-note">Public games only. No password needed.</p>
-          </article>
-        </div>
+            <div class="import-tabs">
+              <button class="tab-button active" data-mode="pgn">PGN</button>
+              <button class="tab-button" data-mode="fen">FEN</button>
+            </div>
+            <textarea
+              id="import-input"
+              rows="6"
+              spellcheck="false"
+              placeholder="Paste PGN here..."
+            ></textarea>
+            <div class="paste-actions">
+              <span
+                class="status-message"
+                id="import-message"
+                role="status"
+              ></span>
+              <button class="button button-outline" id="clear-input">
+                Clear
+              </button>
+              <button class="button button-green" id="load-game">
+                Load game
+              </button>
+            </div>
+          </section>
+        </section>
 
-        <div class="import-divider"><span>OR IMPORT A GAME DIRECTLY</span></div>
+        <section class="depth-promo">
+          <div class="depth-promo-copy">
+            <h2>Bot Play</h2>
+            <p>Play a full game against a Stockfish bot at your level, with friendly coaching on every move.</p>
+          </div>
+          <button class="button button-green" id="play-bot">
+            Play a bot <span>↗</span>
+          </button>
+        </section>
 
-        <div class="direct-import">
-          <div class="direct-import-copy">
-            <h3>PGN or FEN</h3>
-            <p>Paste a complete game or load a single position.</p>
+        <section class="depth-promo">
+          <div class="depth-promo-copy">
+            <h2>Puzzles</h2>
+            <p>Sharpen your tactics with fresh puzzles pulled straight from Lichess.</p>
           </div>
-          <button class="button button-outline" id="open-pgn">Paste PGN</button>
-          <button class="button button-outline" id="open-fen">Load FEN</button>
-        </div>
+          <button class="button button-green" id="play-puzzles">
+            Solve puzzles <span>↗</span>
+          </button>
+        </section>
 
-        <section class="paste-panel hidden" id="import-panel">
-          <div class="paste-panel-heading">
-            <div><h3 id="import-label">Paste PGN</h3><p id="import-help">Paste the moves of a game in PGN format.</p></div>
-            <button class="icon-button" id="close-import" aria-label="Close import panel">×</button>
+        <section class="games-section">
+          <div class="section-heading">
+            <h2>Recent games</h2>
+            <span class="muted" id="recent-count">Saved in this browser</span>
           </div>
-          <div class="import-tabs">
-            <button class="tab-button active" data-mode="pgn">PGN</button>
-            <button class="tab-button" data-mode="fen">FEN</button>
+          <div id="online-results" class="online-results hidden">
+            <div class="results-heading">
+              <h3 id="results-title">Games found</h3>
+              <button class="text-button" id="clear-results">Close</button>
+            </div>
+            <p class="status-message" id="online-message" role="status"></p>
+            <div id="online-games" class="game-list"></div>
           </div>
-          <textarea id="import-input" rows="6" spellcheck="false" placeholder="Paste PGN here..."></textarea>
-          <div class="paste-actions">
-            <span class="status-message" id="import-message" role="status"></span>
-            <button class="button button-outline" id="clear-input">Clear</button>
-            <button class="button button-green" id="load-game">Load game</button>
+          <div class="game-list" id="recent-games">
+            <div class="empty-state">
+              <span class="empty-piece">♘</span>
+              <p>No games yet.</p>
+              <span>Import a game to start your analysis history.</span>
+            </div>
           </div>
         </section>
       </section>
 
-      <section class="games-section">
-        <div class="section-heading">
-          <h2>Recent games</h2>
-          <span class="muted" id="recent-count">Saved in this browser</span>
-        </div>
-        <div id="online-results" class="online-results hidden">
-          <div class="results-heading">
-            <h3 id="results-title">Games found</h3>
-            <button class="text-button" id="clear-results">Close</button>
+      <section class="analysis-view hidden" id="analysis-view">
+        <div class="analysis-toolbar">
+          <button class="back-link" id="back-home">
+            ← Import another game
+          </button>
+          <div class="analysis-title-group">
+            <span class="analysis-live-dot"></span
+            ><span id="analysis-subtitle">Analysis board</span>
           </div>
-          <p class="status-message" id="online-message" role="status"></p>
-          <div id="online-games" class="game-list"></div>
+          <button class="button button-outline button-small" id="export-pgn">
+            Export PGN
+          </button>
         </div>
-        <div class="game-list" id="recent-games">
-          <div class="empty-state"><span class="empty-piece">♘</span><p>No games yet.</p><span>Import a game to start your analysis history.</span></div>
+
+        <div class="analysis-layout">
+          <section class="board-column">
+            <div class="player-strip">
+              <span class="player-piece black-piece">♚</span>
+              <div class="player-details">
+                <strong id="black-player">Black</strong
+                ><span id="black-meta">Black pieces</span>
+              </div>
+              <span class="player-clock" id="black-clock">—</span>
+            </div>
+
+            <div class="board-area">
+              <div class="evaluation-track" aria-label="Position evaluation">
+                <div class="evaluation-black" id="eval-black"></div>
+                <div class="evaluation-white" id="eval-white"></div>
+                <span class="evaluation-label" id="evaluation-label">—</span>
+              </div>
+              <div class="board-frame">
+                <div
+                  class="chessboard"
+                  id="chessboard"
+                  role="grid"
+                  aria-label="Chessboard"
+                ></div>
+              </div>
+            </div>
+
+            <div class="player-strip bottom-player">
+              <span class="player-piece white-piece">♔</span>
+              <div class="player-details">
+                <strong id="white-player">White</strong
+                ><span id="white-meta">White pieces</span>
+              </div>
+              <span class="player-clock" id="white-clock">—</span>
+            </div>
+
+            <div class="board-controls">
+              <div class="move-controls">
+                <button
+                  class="control-button"
+                  id="first-move"
+                  title="First move"
+                  aria-label="First move"
+                >
+                  |◀
+                </button>
+                <button
+                  class="control-button"
+                  id="previous-move"
+                  title="Previous move"
+                  aria-label="Previous move"
+                >
+                  ‹
+                </button>
+                <button
+                  class="control-button"
+                  id="next-move"
+                  title="Next move"
+                  aria-label="Next move"
+                >
+                  ›
+                </button>
+                <button
+                  class="control-button"
+                  id="last-move"
+                  title="Last move"
+                  aria-label="Last move"
+                >
+                  ▶|
+                </button>
+              </div>
+              <div class="board-extra-controls">
+                <button class="text-button" id="flip-board">⇅ Flip</button>
+                <button class="text-button" id="reset-board">Reset</button>
+              </div>
+            </div>
+
+            <div class="position-footer">
+              <span id="position-status">Starting position</span
+              ><span id="turn-status">White to move</span>
+            </div>
+          </section>
+
+          <aside class="analysis-sidebar">
+            <div class="sidebar-section game-info">
+              <div class="sidebar-heading">
+                <h2>Game</h2>
+                <span class="source-chip" id="game-source">LOCAL</span>
+              </div>
+              <div class="game-result" id="result-label">Game loaded</div>
+              <div class="game-info-row">
+                <span>Moves</span><strong id="move-count">0</strong>
+              </div>
+              <div class="game-info-row">
+                <span>Current move</span
+                ><strong id="move-count-badge">Start</strong>
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <div class="sidebar-heading">
+                <h2>Moves</h2>
+                <span class="muted" id="move-list-count">0 plies</span>
+              </div>
+              <div class="move-list" id="move-list">
+                <p class="move-list-empty">Import a game to see its moves.</p>
+              </div>
+            </div>
+
+            <div class="sidebar-section board-editor-section">
+              <div class="sidebar-heading"><h2>Position</h2></div>
+              <p class="muted sidebar-help">
+                Load a position or game using PGN or FEN.
+              </p>
+              <button
+                class="button button-outline full-width"
+                id="analysis-import"
+              >
+                Import PGN / FEN
+              </button>
+              <button class="button button-outline full-width" id="load-sample">
+                Load sample game
+              </button>
+            </div>
+
+            <div class="engine-notice">
+              <span class="engine-icon">⌘</span>
+              <div>
+                <strong>Engine analysis</strong>
+                <p id="engine-status">Board ready. Loading engine…</p>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
-    </section>
 
-    <section class="analysis-view hidden" id="analysis-view">
-      <div class="analysis-toolbar">
-        <button class="back-link" id="back-home">← Import another game</button>
-        <div class="analysis-title-group"><span class="analysis-live-dot"></span><span id="analysis-subtitle">Analysis board</span></div>
-        <button class="button button-outline button-small" id="export-pgn">Export PGN</button>
-      </div>
-
-      <div class="analysis-layout">
-        <section class="board-column">
-          <div class="player-strip">
-            <span class="player-piece black-piece">♚</span>
-            <div class="player-details"><strong id="black-player">Black</strong><span id="black-meta">Black pieces</span></div>
-            <span class="player-clock" id="black-clock">—</span>
+      <section class="depth-view hidden" id="bot-view">
+        <div class="analysis-toolbar">
+          <button class="back-link" id="bp-back">← Back to home</button>
+          <div class="analysis-title-group">
+            <span class="analysis-live-dot"></span
+            ><span>Bot Play</span>
           </div>
+          <button class="button button-outline button-small" id="bp-new">
+            ↻ Change opponent
+          </button>
+        </div>
 
-          <div class="board-area">
-            <div class="evaluation-track" aria-label="Position evaluation">
-              <div class="evaluation-black" id="eval-black"></div>
-              <div class="evaluation-white" id="eval-white"></div>
-              <span class="evaluation-label" id="evaluation-label">—</span>
+        <div class="analysis-layout">
+          <section class="board-column">
+            <div class="player-strip">
+              <span class="player-piece white-piece">♔</span>
+              <div class="player-details">
+                <strong>Stockfish Bot</strong
+                ><span id="bp-level-label">Choose an opponent</span>
+              </div>
+              <span class="player-clock" id="bp-engine-state">Ready</span>
             </div>
-            <div class="board-frame"><div class="chessboard" id="chessboard" role="grid" aria-label="Chessboard"></div></div>
-          </div>
 
-          <div class="player-strip bottom-player">
-            <span class="player-piece white-piece">♔</span>
-            <div class="player-details"><strong id="white-player">White</strong><span id="white-meta">White pieces</span></div>
-            <span class="player-clock" id="white-clock">—</span>
-          </div>
-
-          <div class="board-controls">
-            <div class="move-controls">
-              <button class="control-button" id="first-move" title="First move" aria-label="First move">|◀</button>
-              <button class="control-button" id="previous-move" title="Previous move" aria-label="Previous move">‹</button>
-              <button class="control-button" id="next-move" title="Next move" aria-label="Next move">›</button>
-              <button class="control-button" id="last-move" title="Last move" aria-label="Last move">▶|</button>
+            <div class="board-area">
+              <div class="board-frame" id="bp-board-frame">
+                <div
+                  class="chessboard"
+                  id="bp-board"
+                  role="grid"
+                  aria-label="Chessboard"
+                ></div>
+                <div class="depth-overlay hidden light" id="bp-overlay">
+                  <div class="depth-card" id="bp-overlay-card"></div>
+                </div>
+                <div class="promo-picker hidden" id="bp-promo">
+                  <button type="button" data-promo="q">♛</button>
+                  <button type="button" data-promo="r">♜</button>
+                  <button type="button" data-promo="b">♝</button>
+                  <button type="button" data-promo="n">♞</button>
+                  <button type="button" class="promo-cancel" data-promo="">
+                    Cancel
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="board-extra-controls">
-              <button class="text-button" id="flip-board">⇅ Flip</button>
-              <button class="text-button" id="reset-board">Reset</button>
+
+            <div class="player-strip bottom-player">
+              <span class="player-piece black-piece">♚</span>
+              <div class="player-details">
+                <strong>You</strong><span id="bp-you-label">Pick a side</span>
+              </div>
+              <span class="player-clock">You</span>
             </div>
+
+            <div class="depth-status neutral" id="bp-status" role="status">
+              Choose a bot strength to start.
+            </div>
+
+            <div class="bp-coach" id="bp-coach">
+              <span class="bp-coach-tag">Coach</span>
+              <p>Play a move and you'll get friendly, instructive feedback right here.</p>
+            </div>
+
+            <div class="board-controls">
+              <div class="board-extra-controls">
+                <button class="text-button" id="bp-undo">↩ Undo</button>
+                <button class="text-button" id="bp-flip">⇅ Flip</button>
+              </div>
+            </div>
+          </section>
+
+          <aside class="analysis-sidebar">
+            <div class="sidebar-section">
+              <div class="sidebar-heading">
+                <h2>Game</h2>
+                <span class="source-chip">Bot Play</span>
+              </div>
+              <div class="game-result" id="bp-mission-label">Pick a bot to play</div>
+              <div class="game-info-row">
+                <span>Moves played</span><strong id="bp-moves-row">0</strong>
+              </div>
+              <div class="game-info-row">
+                <span>Great moves</span><strong id="bp-greats-row">0</strong>
+              </div>
+              <div class="game-info-row">
+                <span>Inaccuracies</span><strong id="bp-mistakes-row">0</strong>
+              </div>
+              <div class="game-info-row">
+                <span>Blunders</span><strong id="bp-blunders-row">0</strong>
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <div class="sidebar-heading">
+                <h2>Moves</h2>
+                <span class="muted" id="bp-move-count">0 plies</span>
+              </div>
+              <div class="move-list" id="bp-move-list">
+                <p class="move-list-empty">No moves yet.</p>
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <div class="sidebar-heading"><h2>How it works</h2></div>
+              <p class="muted sidebar-help">
+                Pick an opponent from <strong>100</strong> to <strong>2200</strong> Elo, then
+                choose your side. Every move you make is evaluated and you get a friendly,
+                instructive tip to help you improve. Want to try a different idea? Hit
+                <strong>Undo</strong> to take moves back and keep learning.
+              </p>
+            </div>
+
+            <div class="engine-notice">
+              <span class="engine-icon">⌘</span>
+              <div>
+                <strong>Powered by Stockfish</strong>
+                <p id="bp-engine-notice">Runs entirely in your browser — no server needed.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="depth-view hidden" id="puzzle-view">
+        <div class="analysis-toolbar">
+          <button class="back-link" id="pz-back">← Back to home</button>
+          <div class="analysis-title-group">
+            <span class="analysis-live-dot"></span
+            ><span>Puzzles</span>
           </div>
+          <button class="button button-outline button-small" id="pz-new">
+            ↻ Next puzzle
+          </button>
+        </div>
 
-          <div class="position-footer"><span id="position-status">Starting position</span><span id="turn-status">White to move</span></div>
-        </section>
+        <div class="analysis-layout">
+          <section class="board-column">
+            <div class="player-strip">
+              <span class="player-piece white-piece">♔</span>
+              <div class="player-details">
+                <strong>Lichess Puzzle</strong
+                ><span id="pz-source-top">Tactics trainer</span>
+              </div>
+              <span class="player-clock" id="pz-rating-top">—</span>
+            </div>
 
-        <aside class="analysis-sidebar">
-          <div class="sidebar-section game-info">
-            <div class="sidebar-heading"><h2>Game</h2><span class="source-chip" id="game-source">LOCAL</span></div>
-            <div class="game-result" id="result-label">Game loaded</div>
-            <div class="game-info-row"><span>Moves</span><strong id="move-count">0</strong></div>
-            <div class="game-info-row"><span>Current move</span><strong id="move-count-badge">Start</strong></div>
-          </div>
+            <div class="board-area">
+              <div class="board-frame" id="pz-board-frame">
+                <div
+                  class="chessboard"
+                  id="pz-board"
+                  role="grid"
+                  aria-label="Chessboard"
+                ></div>
+                <div class="depth-overlay hidden light" id="pz-overlay">
+                  <div class="depth-card" id="pz-overlay-card"></div>
+                </div>
+                <div class="promo-picker hidden" id="pz-promo">
+                  <button type="button" data-promo="q">♛</button>
+                  <button type="button" data-promo="r">♜</button>
+                  <button type="button" data-promo="b">♝</button>
+                  <button type="button" data-promo="n">♞</button>
+                  <button type="button" class="promo-cancel" data-promo="">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
 
-          <div class="sidebar-section">
-            <div class="sidebar-heading"><h2>Moves</h2><span class="muted" id="move-list-count">0 plies</span></div>
-            <div class="move-list" id="move-list"><p class="move-list-empty">Import a game to see its moves.</p></div>
-          </div>
+            <div class="player-strip bottom-player">
+              <span class="player-piece black-piece">♚</span>
+              <div class="player-details">
+                <strong>You</strong><span id="pz-you-label">Find the best move</span>
+              </div>
+              <span class="player-clock">Solve it</span>
+            </div>
 
-          <div class="sidebar-section board-editor-section">
-            <div class="sidebar-heading"><h2>Position</h2></div>
-            <p class="muted sidebar-help">Load a position or game using PGN or FEN.</p>
-            <button class="button button-outline full-width" id="analysis-import">Import PGN / FEN</button>
-            <button class="button button-outline full-width" id="load-sample">Load sample game</button>
-          </div>
+            <div class="depth-status neutral" id="pz-status" role="status">
+              Loading a puzzle…
+            </div>
 
-          <div class="engine-notice">
-            <span class="engine-icon">⌘</span>
-            <div><strong>Engine analysis</strong><p id="engine-status">Board ready. Loading engine…</p></div>
-          </div>
-        </aside>
-      </div>
-    </section>
-  </main>
+            <div class="board-controls">
+              <div class="board-extra-controls">
+                <button class="text-button" id="pz-reveal">Show answer</button>
+                <button class="text-button" id="pz-flip">⇅ Flip</button>
+              </div>
+            </div>
+          </section>
 
-  <footer class="site-footer"><span>CalcuChess</span><span>Independent chess analysis · No account required</span></footer>
-</body>
+          <aside class="analysis-sidebar">
+            <div class="sidebar-section">
+              <div class="sidebar-heading">
+                <h2>Puzzle</h2>
+                <span class="source-chip">Lichess</span>
+              </div>
+              <div class="game-result" id="pz-mission-label">Solve the tactic</div>
+              <div class="game-info-row">
+                <span>Rating</span><strong id="pz-rating-row">—</strong>
+              </div>
+              <div class="game-info-row">
+                <span>Source</span><strong id="pz-source-row">—</strong>
+              </div>
+              <div class="game-info-row">
+                <span>Progress</span><strong id="pz-progress-row">—</strong>
+              </div>
+              <div class="game-info-row">
+                <span>Misses</span><strong id="pz-mistakes-row">0</strong>
+              </div>
+              <div class="game-info-row">
+                <span>Total solved</span><strong id="pz-solved-row">0</strong>
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <div class="sidebar-heading">
+                <h2>Themes</h2>
+                <span class="muted" id="pz-id-row">—</span>
+              </div>
+              <p class="muted sidebar-help" id="pz-themes-row">—</p>
+              <div class="move-list" id="pz-move-list">
+                <p class="move-list-empty">Solve the tactic to see moves.</p>
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <div class="sidebar-heading"><h2>How it works</h2></div>
+              <p class="muted sidebar-help">
+                Fresh tactics come straight from <strong>Lichess's</strong> puzzle API. Find
+                the best move to continue the solution — a wrong try just asks you to look
+                again. Use <strong>Show answer</strong> whenever you want to learn the line.
+              </p>
+            </div>
+
+            <div class="engine-notice">
+              <span class="engine-icon">⌘</span>
+              <div>
+                <strong>Sourced from Lichess</strong>
+                <p id="pz-engine-notice">Real community puzzles · no account required.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>CalcuChess</span
+      ><span>Independent chess analysis</span>
+    </footer>
+  </body>
 </html>

@@ -69,8 +69,12 @@ let analysisDepth = 14;
 function showView(view) {
   $("home-view").classList.toggle("hidden", view !== "home");
   $("analysis-view").classList.toggle("hidden", view !== "analysis");
+  if ($("bot-view")) $("bot-view").classList.toggle("hidden", view !== "bot");
+  if ($("puzzle-view")) $("puzzle-view").classList.toggle("hidden", view !== "puzzles");
   $("nav-home").classList.toggle("active", view === "home");
   $("nav-analysis").classList.toggle("active", view === "analysis");
+  if ($("nav-bot")) $("nav-bot").classList.toggle("active", view === "bot");
+  if ($("nav-puzzles")) $("nav-puzzles").classList.toggle("active", view === "puzzles");
   window.scrollTo({ top: 0, behavior: "instant" });
 }
 
