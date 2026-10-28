@@ -62,40 +62,40 @@ const BP_MSG = {
     "Queen-side castle done. Your king is sheltered while your rook eyes the center. Nice choice."
   ],
   great: [
-    "What a move! The engine loves it — you grabbed a big advantage there.",
+    "What a move! You grabbed a big advantage there — I'm impressed.",
     "Brilliant! That is exactly the kind of move that wins games. Top marks.",
     "Excellent find! That significantly swings the position in your favor.",
-    "Wow, strong move! You spotted something the engine really approves of.",
-    "Superb! That is a genuinely powerful move — the evaluation jumped your way.",
+    "Wow, strong move! You spotted something I completely missed.",
+    "Superb! That is a genuinely powerful move — your opponent is in real trouble now.",
     "Fantastic! You found a real resource. That is the move of a strong player.",
     "Incredible eye! That move grabs a decisive edge. Keep this up.",
-    "That is a killer move! The evaluation shot up. Excellent calculation.",
+    "That is a killer move! Excellent calculation — the whole position swings your way.",
     "Superb move — the kind of find that turns a normal game into a great one.",
     "That is excellent! You spotted a resource your opponent completely missed."
   ],
   best: [
-    "That is the engine's top choice — perfect move selection!",
-    "Excellent — exactly what the engine would play. Great preparation.",
-    "Top engine move! You and the computer agree, which is always a good sign.",
+    "Perfect! That is exactly the move I would have chosen myself.",
+    "Excellent — that is the strongest move on the board. Great preparation.",
+    "Spot on! That is the move a strong player would play here.",
     "Spot on! That is the strongest move in the position.",
-    "The engine's first choice — nicely done. That keeps your advantage.",
-    "Perfect move! Finding the engine's top line is no small feat.",
+    "Great job — you found the very best move. That keeps your advantage.",
+    "Perfect move! You found the strongest line out there.",
     "Great call — that is the best move available. Keep playing like this.",
-    "Exactly right! The engine approves wholeheartedly.",
-    "Perfect — that is exactly what the engine would play. Top-level move selection.",
-    "Spot on! The engine agrees completely. Playing like that wins games."
+    "Exactly right! That is the move I would show any student.",
+    "Perfect — you found the strongest move in the position. Textbook play.",
+    "Spot on! That is precisely the move to play. Keep it up!"
   ],
   good: [
     "Nice move! That improves your position and keeps things healthy.",
-    "Good choice — a solid, sensible move the engine likes.",
+    "Good choice — a solid, sensible move.",
     "Well played! That is a strong, constructive move.",
     "Good! You are building your position nicely with that one.",
-    "That is a positive move — the engine gives it the thumbs up.",
+    "That is a positive move — I like it. Keep that energy up.",
     "Nice. A strong move that improves your pieces and keeps your structure sound.",
     "Good job! That is a healthy move that helps your position.",
-    "Solid and strong — the engine approves. Keep it up!",
+    "Solid and strong. Keep it up!",
     "A healthy, positive move. You are slowly building a better position.",
-    "Nice choice — the engine approves and your position keeps improving."
+    "Nice choice — your position keeps improving."
   ],
   solid: [
     "A steady move. Nothing flashy, but it keeps your position sound.",
@@ -136,11 +136,11 @@ const BP_MSG = {
   inaccuracy: [
     "Slightly imprecise, but nothing serious. The position is still fine.",
     "A tiny inaccuracy. You keep a perfectly playable game — just a touch loose.",
-    "Not the top choice, but it is minor. Chess is forgiving here.",
+    "Not your best, but it is minor. Chess is forgiving here.",
     "A small imprecision. No real harm done — keep going.",
     "That is slightly inaccurate, but you are still in good shape.",
     "Minor slip, nothing to worry about. Stay aware of your opponent's plans.",
-    "A touch imprecise. The engine shrugs it off. Play on!",
+    "A touch imprecise. No harm done — shake it off and play on!",
     "Slightly off the best move, but perfectly fine. Keep the momentum going.",
     "Only a tiny inaccuracy — the game is very much still on. No need to worry.",
     "A slightly loose move, but nothing serious. Stay alert and keep playing your plan."
