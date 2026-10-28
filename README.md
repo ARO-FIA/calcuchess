@@ -32,15 +32,15 @@ To get started, visit the CalcuChess website:
 
 CalcuChess is currently available as an open beta. You can explore the website, try its available features, and help shape its future by sharing feedback.
 
-The official launch is planned for December 2026, when CalcuChess is expected to move to its custom domain.
+The official launch is planned for November 2026, when CalcuChess is expected to move to its custom domain.
 
-**Try CalcuChess:** calcuchess.netlify.app
+**Try CalcuChess:** [calcuchess.netlify.app](calcuchess.netlify.app)
 
 **Follow the launch:** [CalcuChess on Product Hunt](https://www.producthunt.com/products/calcuchess?launch=calcuchess)
 
-Once you're on the website, choose a feature and follow the instructions provided. You can analyze a supported game, start a game against a bot, or explore the available puzzles.
-
 CalcuChess is designed to make its tools straightforward to access, so you can focus on playing, learning, and improving.
+
+Since this is an open beta please expect bugs, and I would appreciate if you reported the bugs [here](placeholder link)
 
 ## About the Project
 
